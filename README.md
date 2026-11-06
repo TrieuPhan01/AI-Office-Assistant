@@ -63,11 +63,11 @@ Python 3.10+, `python-docx`, `openpyxl`, `PyYAML`, `requests`, `pdfplumber` (+ `
 
 ## Bắt đầu nhanh
 
-```powershell
-python -m venv .venv                 # lần đầu: tạo môi trường riêng cho dự án
-.\.venv\Scripts\Activate.ps1         # mỗi lần mở terminal (macOS/Linux: source .venv/bin/activate)
-pip install -r requirements.txt      # lần đầu
-claude                               # rồi nói yêu cầu bằng tiếng Việt
-```
+Làm việc hoàn toàn trong **VS Code** qua khung chat Claude Code – không cần terminal:
+
+1. Cài VS Code, Python 3.10+ và extension **Claude Code** (Anthropic); đăng nhập.
+2. **File → Open Folder** → chọn thư mục `AI-Office-Assistant`.
+3. Lần đầu, gõ vào khung chat: *"Cài môi trường Python (.venv) cho dự án và chạy test kiểm tra."*
+4. Thả tài liệu vào `workspace/input/`, nói yêu cầu bằng tiếng Việt; kết quả nằm trong `workspace/output/`.
 
 Chi tiết từng bước và cách xử lý lỗi: xem [HUONG_DAN_SU_DUNG.md](HUONG_DAN_SU_DUNG.md).

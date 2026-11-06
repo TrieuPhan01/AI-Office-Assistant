@@ -46,7 +46,7 @@ Một yêu cầu có thể cần nhiều Skill (ví dụ: soạn tờ trình + k
 - PowerShell: `$env:PYTHONUTF8='1'; .\.venv\Scripts\python.exe scripts\<script>.py ...`
 - Bash (Git Bash): `PYTHONUTF8=1 .venv/Scripts/python.exe scripts/<script>.py ...`
 
-Trong các lệnh dưới đây, `python` nghĩa là Python của `.venv`. Nếu chưa có `.venv` (báo không tìm thấy `.venv\Scripts\python.exe`) → báo người dùng và hướng dẫn mục 4 của `HUONG_DAN_SU_DUNG.md`, không tự cài vào Python chung.
+Trong các lệnh dưới đây, `python` nghĩa là Python của `.venv`. Nếu chưa có `.venv` (báo không tìm thấy `.venv\Scripts\python.exe`) → báo người dùng và đề nghị **tự tạo `.venv` + cài `requirements.txt` cho họ** (sau khi họ đồng ý), không tự cài vào Python chung. Người dùng làm việc qua khung chat VS Code, không dùng terminal: không yêu cầu họ tự gõ lệnh; việc gì cần chạy lệnh thì Claude chạy.
 
 ```bash
 python scripts/extract_docx.py  <file.docx> [-o out.json] [--format text]
