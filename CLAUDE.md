@@ -20,7 +20,7 @@ Một yêu cầu có thể cần nhiều Skill (ví dụ: soạn tờ trình + k
 ## 2. Quy trình chuẩn
 
 1. Xác định loại công việc; nếu thiếu dữ kiện **quan trọng** thì hỏi (tối đa vài câu ngắn), nếu không thì làm tiếp và đánh dấu chỗ thiếu.
-2. Xem file người dùng đưa vào `workspace/input/` (hoặc đường dẫn họ nêu). File gốc là bất khả xâm phạm.
+2. Xem file người dùng đưa vào `workspace/input/`, file họ đính kèm/nhắc bằng `@` trong khung chat, hoặc đường dẫn họ nêu. File gốc là bất khả xâm phạm. File nằm ngoài dự án mà cần chạy script → **sao chép** vào `workspace/input/` (không di chuyển, không sửa bản gốc) rồi xử lý trên bản sao.
 3. Dùng script trong `scripts/` để trích xuất / so sánh / kiểm tra bằng máy, rồi mới dùng khả năng suy luận của bạn.
 4. Tạo **file kết quả trong `workspace/output/`** (không chỉ trả lời trên màn hình). Tên file: `YYYYMMDD_<việc>_<tên-gốc>.<đuôi>`; không ghi đè file đã có, nếu trùng thì thêm hậu tố `_v2`, `_v3`.
 5. Tự kiểm tra kết quả trước khi báo cáo: `python scripts/document_validator.py <file>`.
@@ -40,6 +40,13 @@ Một yêu cầu có thể cần nhiều Skill (ví dụ: soạn tờ trình + k
 10. Khi chạy script lỗi: đọc lỗi, sửa nguyên nhân, chạy lại; không bỏ qua im lặng.
 
 ## 4. Lệnh thường dùng
+
+**Luôn chạy script bằng Python của môi trường ảo dự án và bật UTF-8**, không dùng `python` chung của máy (máy có xung đột thư viện với phần mềm khác):
+
+- PowerShell: `$env:PYTHONUTF8='1'; .\.venv\Scripts\python.exe scripts\<script>.py ...`
+- Bash (Git Bash): `PYTHONUTF8=1 .venv/Scripts/python.exe scripts/<script>.py ...`
+
+Trong các lệnh dưới đây, `python` nghĩa là Python của `.venv`. Nếu chưa có `.venv` (báo không tìm thấy `.venv\Scripts\python.exe`) → báo người dùng và hướng dẫn mục 4 của `HUONG_DAN_SU_DUNG.md`, không tự cài vào Python chung.
 
 ```bash
 python scripts/extract_docx.py  <file.docx> [-o out.json] [--format text]

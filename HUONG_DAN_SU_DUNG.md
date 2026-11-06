@@ -39,17 +39,65 @@ Nếu chưa có: tải từ https://www.python.org/downloads/ và **tích chọn
 
 ## 4. Cài các thư viện
 
-Mở terminal tại thư mục dự án:
+Dự án **bắt buộc dùng môi trường ảo riêng** (thư mục `.venv`). Lý do: nếu cài thẳng vào Python chung của máy, thư viện của dự án (ví dụ `pillow` do `pdfplumber` kéo theo) có thể đè lên phiên bản mà phần mềm khác đang cần, gây cảnh báo `pip's dependency resolver ... incompatible`.
 
-```bash
-cd AI-Office-Assistant
-python -m venv .venv                 # (khuyến nghị) môi trường riêng
-.venv\Scripts\activate               # Windows
-source .venv/bin/activate            # macOS / Linux
+### 4.1. Cài lần đầu (chỉ làm một lần)
+
+Mở terminal tại thư mục dự án.
+
+**Windows (PowerShell):**
+
+```powershell
+cd D:\Core\AI-Office-Assistant          # thay bằng đường dẫn thực tế
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Kiểm tra: `python -m pytest tests -q` → phải báo `36 passed`. (Nếu chưa có pytest: `pip install pytest`.)
+**Windows (Command Prompt – cmd):** dùng `.venv\Scripts\activate.bat` thay cho dòng `Activate.ps1`.
+
+**macOS / Linux:**
+
+```bash
+cd AI-Office-Assistant
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Thư mục `.venv/` đã được loại khỏi Git, không cần sao chép hay gửi cho người khác.
+
+### 4.2. Kích hoạt môi trường mỗi lần làm việc
+
+Mỗi lần **mở terminal mới**, chạy lại lệnh kích hoạt trước khi dùng `python` hoặc `claude`:
+
+```powershell
+.\.venv\Scripts\Activate.ps1          # Windows PowerShell
+source .venv/bin/activate             # macOS / Linux
+```
+
+Đã kích hoạt đúng khi đầu dòng lệnh có chữ **`(.venv)`**. Muốn thoát môi trường: gõ `deactivate`.
+
+> Không muốn kích hoạt? Có thể gọi thẳng Python của môi trường: `.\.venv\Scripts\python.exe scripts\mimo_client.py status`.
+
+### 4.3. Bật chế độ UTF-8 cho Python (Windows, làm một lần)
+
+Windows mặc định không dùng UTF-8 nên tiếng Việt trong kết quả script/test có thể bị lỗi `UnicodeDecodeError: 'charmap' codec...`. Chạy một lần rồi **mở lại terminal**:
+
+```powershell
+setx PYTHONUTF8 1
+```
+
+### 4.4. Kiểm tra cài đặt
+
+```bash
+pip install pytest                  # chỉ cần lần đầu, trong môi trường (.venv)
+pip check                           # phải báo: No broken requirements found.
+python -m pytest tests -q
+```
+
+Kết quả mong đợi: **`34 passed, 2 skipped`**. Hai test bị bỏ qua (`skipped`) là bình thường nếu máy chưa có `pypdf` và LibreOffice; cài đủ cả hai thì sẽ là `36 passed`.
 
 > Đọc PDF tiếng Việt: nên có `PyMuPDF` (đã nằm trong requirements). Nếu không cài được, script tự dùng `pdfplumber`/`pdftotext`.
 
@@ -112,12 +160,32 @@ Sau đó mở Antigravity → **Open Folder** → chọn thư mục `AI-Office-A
 
 > Lưu ý: cách Antigravity nạp `CLAUDE.md` có thể khác Claude Code. Nếu thấy nó không tuân quy tắc, nhắc: *"Đọc CLAUDE.md trong thư mục gốc và làm theo."*
 
-## 10. Chạy bằng CLI
+## 10. Cách làm việc với Claude
 
-**Khi nào cần chạy `claude`?** Mỗi khi bạn muốn nhờ AI làm việc. Luôn chạy **trong thư mục dự án**:
+Có hai cách, dùng chung một "bộ não" (cùng `CLAUDE.md`, cùng 5 Skill, cùng quy tắc). **Khuyến nghị dùng VS Code** vì dễ đưa file và xem kết quả.
 
-```bash
-cd AI-Office-Assistant
+### 10.1. Trong VS Code (khuyến nghị)
+
+1. Cài extension **Claude Code** trong VS Code (Extensions → tìm "Claude Code" của Anthropic), đăng nhập.
+2. **File → Open Folder** → chọn thư mục `AI-Office-Assistant` (phải mở đúng thư mục gốc dự án).
+3. Mở khung Claude Code (biểu tượng Claude ở thanh bên/góc trên) và gõ yêu cầu như nói chuyện.
+
+Không cần gõ lệnh `claude` hay kích hoạt `.venv`: Claude tự dùng Python của `.venv` khi chạy script (quy tắc đã ghi trong `CLAUDE.md`). Chỉ cần đã cài `.venv` một lần theo mục 4.
+
+Tiện ích riêng của VS Code:
+
+- **Đưa file trực tiếp** vào khung chat (xem mục 12).
+- **Bôi đen** một đoạn trong file đang mở rồi hỏi → Claude biết bạn đang nói về đoạn nào.
+- Tên file trong câu trả lời **bấm vào là mở**; thay đổi hiển thị ngay trong trình soạn thảo.
+- Xem lại các cuộc hội thoại cũ trong danh sách lịch sử của khung Claude Code.
+
+### 10.2. Trong terminal (CLI)
+
+**Khi nào cần chạy `claude`?** Khi không dùng VS Code. Luôn chạy **trong thư mục dự án** và **kích hoạt `.venv` trước**:
+
+```powershell
+cd D:\Core\AI-Office-Assistant
+.\.venv\Scripts\Activate.ps1          # macOS / Linux: source .venv/bin/activate
 claude
 ```
 
@@ -148,7 +216,17 @@ Hoặc mở phiên mới và nói: *"Tiếp tục việc dở: xem file mới nh
 
 **`word-expert`** – Đọc/tạo/chuẩn hóa Word, đọc PDF, xuất PDF. Không phá bố cục, không xóa nội dung, luôn tạo file mới.
 
-## 12. Đưa tài liệu vào `workspace/input`
+## 12. Đưa tài liệu cho Claude
+
+**Trong VS Code (dễ nhất):**
+
+- **Kéo thả** file từ File Explorer của Windows vào thư mục `workspace/input` trong cây thư mục bên trái của VS Code, rồi nói: *"Kiểm tra các file trong workspace/input…"*
+- Hoặc gõ **`@`** trong khung chat rồi chọn file của dự án (ví dụ `@workspace/input/hop-dong.docx`) để chỉ đúng file cần xử lý.
+- Hoặc dùng nút **đính kèm** trong khung chat để chọn file từ máy. File nằm ngoài dự án sẽ được Claude **sao chép** vào `workspace/input/` rồi xử lý trên bản sao; bản gốc giữ nguyên.
+
+> Nên đưa file vào `workspace/input/` khi cần xử lý bằng script (so sánh, chuẩn hóa, xuất báo cáo) – Claude cần đường dẫn file trên ổ đĩa để chạy script.
+
+**Trong terminal:**
 
 ```bash
 copy "D:\HopDong\hop-dong.docx" workspace\input\          # Windows
@@ -224,7 +302,10 @@ description: Mô tả 1–2 câu: làm gì, khi nào dùng (Claude dựa vào đ
 | Hiện tượng | Cách xử lý |
 |---|---|
 | `claude: command not found` | Cài lại Claude Code (mục 5); mở terminal mới |
-| `ModuleNotFoundError: docx` | `pip install -r requirements.txt` (nhớ kích hoạt `.venv`) |
+| `ModuleNotFoundError: docx` (hoặc `yaml`, `pdfplumber`…) | Chưa kích hoạt `.venv`: chạy `.\.venv\Scripts\Activate.ps1` (thấy `(.venv)` đầu dòng). Vẫn lỗi thì `pip install -r requirements.txt` |
+| `pip's dependency resolver ... X requires Y, but you have Y ... incompatible` | Bạn đang cài vào Python chung của máy, đụng thư viện của phần mềm khác. Tạo và dùng `.venv` theo mục 4, cài lại trong đó. Xem đúng môi trường: `python -c "import sys; print(sys.executable)"` phải trỏ vào `...\.venv\...` |
+| `Activate.ps1 cannot be loaded because running scripts is disabled` | Chạy một lần: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, rồi kích hoạt lại; hoặc dùng cmd với `.venv\Scripts\activate.bat` |
+| `UnicodeDecodeError: 'charmap' codec can't decode...` | Chạy `setx PYTHONUTF8 1`, mở lại terminal (mục 4.3) |
 | Claude không thấy Skill | Chạy `claude` **trong thư mục dự án**; kiểm tra `.claude/skills/<tên>/SKILL.md` có phần `---name/description---` |
 | PDF báo `needs_ocr` | PDF là ảnh scan → OCR trước rồi đưa lại |
 | PDF đọc ra chữ sai dấu (`Nguyễ0n`, `(cid:18)`) | Thử `--engine pdftotext` hoặc `pymupdf`; hoặc xin bản Word gốc |
@@ -236,7 +317,7 @@ description: Mô tả 1–2 câu: làm gì, khi nào dùng (Claude dựa vào đ
 
 ## 18. Cập nhật source code
 
-Nếu có Git: `git pull`, rồi `pip install -r requirements.txt`, `python scripts/sync_skills.py`, `python -m pytest tests -q`. Nếu nhận bản nén mới: giải nén **sang thư mục khác**, rồi chép sang `workspace/` và `references/` của bạn, `.env` giữ nguyên. Không ghi đè thư mục `workspace/`.
+Nếu có Git: `git pull`, kích hoạt `.venv`, rồi `pip install -r requirements.txt`, `python scripts/sync_skills.py`, `python -m pytest tests -q`. Nếu nhận bản nén mới: giải nén **sang thư mục khác**, rồi chép sang `workspace/` và `references/` của bạn, `.env` giữ nguyên. Không ghi đè thư mục `workspace/`.
 
 ## 19. Lưu ý về bảo mật
 

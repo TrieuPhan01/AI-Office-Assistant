@@ -63,7 +63,11 @@ Python 3.10+, `python-docx`, `openpyxl`, `PyYAML`, `requests`, `pdfplumber` (+ `
 
 ## Bắt đầu nhanh
 
-```bash
-pip install -r requirements.txt
-claude            # mở trong thư mục dự án, rồi nói yêu cầu bằng tiếng Việt
+```powershell
+python -m venv .venv                 # lần đầu: tạo môi trường riêng cho dự án
+.\.venv\Scripts\Activate.ps1         # mỗi lần mở terminal (macOS/Linux: source .venv/bin/activate)
+pip install -r requirements.txt      # lần đầu
+claude                               # rồi nói yêu cầu bằng tiếng Việt
 ```
+
+Chi tiết từng bước và cách xử lý lỗi: xem [HUONG_DAN_SU_DUNG.md](HUONG_DAN_SU_DUNG.md).
