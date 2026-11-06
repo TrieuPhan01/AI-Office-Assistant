@@ -1,0 +1,21 @@
+# Bí mật
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Dữ liệu làm việc của người dùng (giữ lại file .gitkeep)
+workspace/input/*
+workspace/output/*
+!workspace/input/.gitkeep
+!workspace/output/.gitkeep
+
+# Bản sao Skills cho Antigravity (tạo bằng scripts/sync_skills.py)
+.agents/
+
+# File tạm của Word / LibreOffice
+~$*
+.~lock.*

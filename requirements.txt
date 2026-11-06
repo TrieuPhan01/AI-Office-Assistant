@@ -1,0 +1,12 @@
+# Bắt buộc
+python-docx>=1.1.0      # đọc/tạo/sửa DOCX
+openpyxl>=3.1.0         # xuất bảng Excel tổng hợp lỗi
+PyYAML>=6.0             # đọc config/models.yaml
+requests>=2.31.0        # gọi MiMo API
+pdfplumber>=0.11.0      # đọc PDF (dự phòng khi chưa có PyMuPDF)
+
+# Khuyến nghị (nhanh và chính xác hơn khi đọc PDF; script tự dùng nếu có)
+PyMuPDF>=1.24.0
+
+# Tùy chọn
+python-dotenv>=1.0.0    # đọc file .env (nếu không có, script tự đọc .env đơn giản)

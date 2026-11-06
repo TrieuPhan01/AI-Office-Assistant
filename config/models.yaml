@@ -1,0 +1,33 @@
+# Cấu hình mô hình AI cho AI Office Assistant
+# - Claude (qua Claude Code CLI) là AI chính, không cần cấu hình thêm ở đây.
+# - MiMo là AI phụ trợ, MẶC ĐỊNH TẮT. Hệ thống vẫn chạy đầy đủ khi MiMo tắt.
+
+primary:
+  provider: anthropic
+  enabled: true
+  note: "Claude chạy qua Claude Code CLI; model do Claude Code quyết định (lệnh /model)."
+
+secondary:
+  provider: mimo
+  enabled: false                    # đổi thành true để bật MiMo
+  api_key_env: MIMO_API_KEY         # tên biến môi trường chứa API key (đặt trong file .env)
+  # Giá trị dưới đây lấy từ tài liệu chính thức https://mimo.mi.com (kiểm tra ngày 2026-11-06).
+  # Hãy đối chiếu lại tài liệu trước khi dùng thật vì endpoint/model có thể thay đổi.
+  base_url: "https://api.xiaomimimo.com/v1"      # OpenAI-compatible, gọi POST {base_url}/chat/completions
+  # base_url (gói Token Plan): "https://token-plan-cn.xiaomimimo.com/v1"
+  model: "mimo-v2.6-pro"
+  timeout_seconds: 30
+  max_retries: 1                    # số lần thử lại khi timeout / HTTP 429 / 5xx
+  max_input_chars: 20000            # cắt bớt dữ liệu gửi đi (giảm chi phí và rủi ro lộ dữ liệu)
+  # BẢO MẬT: false = KHÔNG được gửi nội dung tài liệu sang MiMo, trừ khi người dùng
+  # xác nhận từng lần bằng cờ --allow-send. Chỉ đặt true nếu tổ chức đã có chính sách cho phép.
+  allow_external_documents: false
+
+routing:
+  default: primary
+  use_secondary_for:
+    - document_classification
+    - data_extraction
+    - preliminary_summary
+  # Nếu MiMo tắt / thiếu key / bị lỗi / hết thời gian chờ -> Claude tự xử lý tác vụ đó.
+  fallback_to_primary: true
